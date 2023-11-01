@@ -1,10 +1,40 @@
+import 'package:advanced_basics/data/questions.dart';
+import 'package:advanced_basics/questions_summary/questions_summary.dart';
 import 'package:flutter/material.dart';
 
 class ResultsScreen extends StatelessWidget {
-  const ResultsScreen({super.key});
+  const ResultsScreen({
+    super.key,
+    required this.chosenAnswers,
+    required this.onRestart,
+  });
+
+  final List<String> chosenAnswers;
+  final void Function() onRestart;
+
+  List<Map<String, Object>> getSummaryData() {
+    final List<Map<String, Object>> summary = [];
+
+    for (var i = 0; i < chosenAnswers.length; i++) {
+      summary.add({
+        "question_index": i,
+        "question": questions[i].text,
+        "correct_answer": questions[i].answers[0],
+        "user_answer": chosenAnswers[i],
+      });
+    }
+
+    return summary;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestions = summaryData
+        .where((data) => data["correct_answer"] == data["user_answer"])
+        .length;
+
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -12,15 +42,39 @@ class ResultsScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("You answered X out of Y questions correctly!"),
+            Text(
+              "You answered $numCorrectQuestions out of $numTotalQuestions questions correctly!",
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 202, 119, 216), fontSize: 18),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(
               height: 30,
             ),
-            const Text("List of answers and questions"),
-            TextButton(onPressed: () {}, child: const Text("Restart quiz"))
+            QuestionsSummary(summaryData),
+            const SizedBox(
+              height: 30,
+            ),
+            TextButton.icon(
+                onPressed: onRestart,
+                style: TextButton.styleFrom(foregroundColor: Colors.white),
+                icon: const Icon(Icons.refresh),
+                label: const Text("Restart quiz"))
           ],
         ),
       ),
     );
   }
+}
+
+int correctQuestions(List<Map<String, Object>> summary) {
+  int num = 0;
+
+  for (var data in summary) {
+    if (data["correct_answer"] as String == data["user_answer"] as String) {
+      num++;
+    }
+  }
+
+  return num;
 }
