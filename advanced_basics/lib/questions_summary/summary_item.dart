@@ -55,7 +55,5 @@ class SummaryItem extends StatelessWidget {
         ],
       ),
     );
-
-    throw UnimplementedError();
   }
 }
