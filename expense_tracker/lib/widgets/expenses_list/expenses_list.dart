@@ -10,7 +10,7 @@ class ExpensesList extends StatelessWidget {
   });
 
   final List<Expense> expenses;
-  final void Function(int) onRemoveExpense;
+  final void Function(Expense, int) onRemoveExpense;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ExpensesList extends StatelessWidget {
         return Dismissible(
           key: ValueKey(expenses[index]),
           onDismissed: (direction) {
-            onRemoveExpense(index);
+            onRemoveExpense(expenses[index], index);
           },
           child: ExpenseItem(expense: expenses[index]),
         );
