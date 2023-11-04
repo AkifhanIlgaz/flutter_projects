@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme().copyWith(
           titleLarge: TextStyle(
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
             color: kColorScheme.onSecondaryContainer,
-            fontSize: 14,
+            fontSize: 17,
           ),
         ),
       ),
