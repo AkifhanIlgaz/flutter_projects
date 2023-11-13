@@ -16,6 +16,17 @@ class _FiltersScreenState extends State<FiltersScreen> {
       appBar: AppBar(
         title: const Text("Your Filters"),
       ),
+      // drawer: MainDrawer(onSelectScreen: ((identifier) {
+      //   Navigator.pop(context);
+
+      //   if (identifier == "filters") {
+      //     Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => const FiltersScreen(),
+      //         ));
+      //   }
+      // })),
       body: Column(
         children: [
           SwitchListTile(
