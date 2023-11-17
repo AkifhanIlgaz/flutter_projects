@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/data/realtime_database.dart';
 import 'package:shopping_list/models/category.dart';
-
-const baseUrl = "flutter-prep-54c35-default-rtdb.firebaseio.com";
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
