@@ -19,13 +19,13 @@ class _NewItemState extends State<NewItem> {
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
 
-  void _saveItem() {
+  void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       final url = Uri.https(baseUrl, "shopping-list.json");
 
-      http.post(
+      final res = await http.post(
         url,
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,12 @@ class _NewItemState extends State<NewItem> {
         ),
       );
 
-      print("add");
+      print(res.body);
+      print(res.statusCode);
+
+      if (!context.mounted) {
+        return;
+      }
 
       Navigator.pop(context);
     }
