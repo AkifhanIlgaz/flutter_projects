@@ -16,6 +16,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
+  var isLoading = true;
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _GroceryListState extends State<GroceryList> {
 
     setState(() {
       _groceryItems = loadedItems;
+      isLoading = false;
     });
   }
 
@@ -76,6 +78,44 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content = const Center(
+      child: Text("No items added yet!"),
+    );
+
+    if (isLoading) {
+      content = const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (_groceryItems.isNotEmpty) {
+      content = ListView.builder(
+        itemCount: _groceryItems.length,
+        itemBuilder: (ctx, index) {
+          return Dismissible(
+            key: ValueKey(_groceryItems[index].id),
+            onDismissed: (direction) {
+              setState(() {
+                _groceryItems.removeAt(index);
+              });
+            },
+            child: ListTile(
+              title: Text(_groceryItems[index].name),
+              leading: Container(
+                width: 24,
+                height: 24,
+                color: _groceryItems[index].category.color,
+              ),
+              trailing: Text(
+                _groceryItems[index].quantity.toString(),
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Groceries"),
@@ -86,35 +126,7 @@ class _GroceryListState extends State<GroceryList> {
           ),
         ],
       ),
-      body: _groceryItems.isEmpty
-          ? const Center(
-              child: Text("No items added yet!"),
-            )
-          : ListView.builder(
-              itemCount: _groceryItems.length,
-              itemBuilder: (ctx, index) {
-                return Dismissible(
-                  key: ValueKey(_groceryItems[index].id),
-                  onDismissed: (direction) {
-                    setState(() {
-                      _groceryItems.removeAt(index);
-                    });
-                  },
-                  child: ListTile(
-                    title: Text(_groceryItems[index].name),
-                    leading: Container(
-                      width: 24,
-                      height: 24,
-                      color: _groceryItems[index].category.color,
-                    ),
-                    trailing: Text(
-                      _groceryItems[index].quantity.toString(),
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: content,
     );
   }
 }
