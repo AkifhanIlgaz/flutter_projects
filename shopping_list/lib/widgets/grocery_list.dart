@@ -83,6 +83,26 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
+  void _removeItem(GroceryItem item, int index) async {
+    setState(() {
+      _groceryItems.removeAt(index);
+    });
+
+    final url = Uri.https(baseUrl, "shopping-list/${item.id}.json");
+
+    final res = await http.delete(url);
+
+    if (res.statusCode >= 400) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Cnnnot delete the item")));
+
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(
@@ -101,11 +121,8 @@ class _GroceryListState extends State<GroceryList> {
         itemBuilder: (ctx, index) {
           return Dismissible(
             key: ValueKey(_groceryItems[index].id),
-            onDismissed: (direction) {
-              setState(() {
-                _groceryItems.removeAt(index);
-              });
-            },
+            onDismissed: (direction) =>
+                _removeItem(_groceryItems[index], index),
             child: ListTile(
               title: Text(_groceryItems[index].name),
               leading: Container(
