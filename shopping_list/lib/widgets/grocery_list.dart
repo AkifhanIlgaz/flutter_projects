@@ -28,47 +28,53 @@ class _GroceryListState extends State<GroceryList> {
   void _loadItems() async {
     final url = Uri.https(baseUrl, "shopping-list.json");
 
-    final res = await http.get(
-      url,
-    );
+    try {
+      final res = await http.get(
+        url,
+      );
 
-    if (res.statusCode >= 400) {
+      if (res.statusCode >= 400) {
+        setState(() {
+          _error = "Failed to fetch data! Please try again later.";
+        });
+      }
+
+      if (res.body == "Null") {
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      final Map<String, dynamic> listData = json.decode(
+        res.body,
+      );
+
+      final List<GroceryItem> loadedItems = [];
+
+      for (final item in listData.entries) {
+        final category = categories.entries
+            .firstWhere((cat) => cat.value.title == item.value["category"])
+            .value;
+
+        loadedItems.add(
+          GroceryItem(
+              id: item.key,
+              name: item.value["name"],
+              quantity: item.value["quantity"],
+              category: category),
+        );
+      }
+
+      setState(() {
+        _groceryItems = loadedItems;
+        isLoading = false;
+      });
+    } catch (error) {
       setState(() {
         _error = "Failed to fetch data! Please try again later.";
       });
     }
-
-    if (res.body == "Null") {
-      setState(() {
-        isLoading = false;
-      });
-      return;
-    }
-
-    final Map<String, dynamic> listData = json.decode(
-      res.body,
-    );
-
-    final List<GroceryItem> loadedItems = [];
-
-    for (final item in listData.entries) {
-      final category = categories.entries
-          .firstWhere((cat) => cat.value.title == item.value["category"])
-          .value;
-
-      loadedItems.add(
-        GroceryItem(
-            id: item.key,
-            name: item.value["name"],
-            quantity: item.value["quantity"],
-            category: category),
-      );
-    }
-
-    setState(() {
-      _groceryItems = loadedItems;
-      isLoading = false;
-    });
   }
 
   void _addItem() async {
