@@ -11,8 +11,13 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 }
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
-  final _formKey = GlobalKey<FormState>();
-  var _enteredTitle = "";
+  final _titleController = TextEditingController();
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,50 +29,55 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  label: Text(
-                    "Title",
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ),
-                keyboardType: TextInputType.text,
-                style: Theme.of(context).textTheme.titleSmall,
-                validator: (value) {
-                  if (value == null || value.isEmpty || value.trim().isEmpty) {
-                    return "Must be valid title";
-                  }
-                  return null;
-                },
-                onChanged: (newValue) {
-                  _enteredTitle = newValue;
-                },
+        child: Column(
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                labelText: "Title",
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: ElevatedButton.icon(
-                  style: const ButtonStyle(
-                    alignment: Alignment.center,
-                  ),
-                  onPressed: () {
-                    ref
-                        .watch(favoritePlacesProvider.notifier)
-                        .addFavoritePlace(Place(title: _enteredTitle));
+              controller: _titleController,
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onBackground),
+            ),
+            // TextFormField(
+            //   decoration: InputDecoration(
+            //     label: Text(
+            //       "Title",
+            //       style: Theme.of(context).textTheme.titleSmall,
+            //     ),
+            //   ),
+            //   keyboardType: TextInputType.text,
+            //   style: Theme.of(context).textTheme.titleSmall,
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty || value.trim().isEmpty) {
+            //       return "Must be valid title";
+            //     }
+            //     return null;
+            //   },
+            //   onChanged: (newValue) {
+            //     _enteredTitle = newValue;
+            //   },
+            // ),
+            const SizedBox(
+              height: 16,
+            ),
+            ElevatedButton.icon(
+              style: const ButtonStyle(
+                alignment: Alignment.center,
+              ),
+              onPressed: () {
+                ref
+                    .watch(favoritePlacesProvider.notifier)
+                    .addFavoritePlace(Place(title: _titleController.text));
 
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text("Add place"),
-                ),
-              ),
-            ],
-          ),
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.add),
+              label: const Text("Add place"),
+            ),
+          ],
         ),
       ),
     );
