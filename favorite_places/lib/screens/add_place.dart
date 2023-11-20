@@ -58,7 +58,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   onPressed: () {
                     ref
                         .watch(favoritePlacesProvider.notifier)
-                        .addFavoritePlace(FavoritePlace(title: _enteredTitle));
+                        .addFavoritePlace(Place(title: _enteredTitle));
 
                     Navigator.pop(context);
                   },
