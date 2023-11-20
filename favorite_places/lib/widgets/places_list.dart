@@ -28,6 +28,10 @@ class PlacesList extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground),
                 ),
+                leading: CircleAvatar(
+                  radius: 26,
+                  backgroundImage: FileImage(favoritePlaces[index].image),
+                ),
                 onTap: () {
                   Navigator.push(
                     context,

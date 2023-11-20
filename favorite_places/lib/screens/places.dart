@@ -30,7 +30,10 @@ class PlacesScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.black,
       ),
-      body: const PlacesList(),
+      body: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: PlacesList(),
+      ),
     );
   }
 }
