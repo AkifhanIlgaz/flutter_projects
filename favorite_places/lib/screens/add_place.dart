@@ -1,4 +1,3 @@
-import 'package:favorite_places/models/favorite_place.dart';
 import 'package:favorite_places/providers/favorite_places_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +11,18 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
+
+  void _savePlace() {
+    final enteredTitle = _titleController.text;
+
+    if (enteredTitle.isEmpty) {
+      return;
+    }
+
+    ref.read(favoritePlacesProvider.notifier).addFavoritePlace(enteredTitle);
+
+    Navigator.pop(context);
+  }
 
   @override
   void dispose() {
@@ -67,13 +78,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               style: const ButtonStyle(
                 alignment: Alignment.center,
               ),
-              onPressed: () {
-                ref
-                    .watch(favoritePlacesProvider.notifier)
-                    .addFavoritePlace(Place(title: _titleController.text));
-
-                Navigator.pop(context);
-              },
+              onPressed: _savePlace,
               icon: const Icon(Icons.add),
               label: const Text("Add place"),
             ),

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class FavoritePlacesProvider extends StateNotifier<List<Place>> {
   FavoritePlacesProvider() : super(<Place>[]);
 
-  void addFavoritePlace(Place place) {
-    state = [...state, place];
+  void addFavoritePlace(String title) {
+    state = [...state, Place(title: title)];
   }
 }
 
