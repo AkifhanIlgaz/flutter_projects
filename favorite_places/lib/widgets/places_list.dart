@@ -1,4 +1,5 @@
 import 'package:favorite_places/providers/favorite_places_provider.dart';
+import 'package:favorite_places/screens/place_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,6 +28,16 @@ class PlacesList extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: Theme.of(context).colorScheme.onBackground),
                 ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return PlaceDetailsScreen(place: favoritePlaces[index]);
+                      },
+                    ),
+                  );
+                },
               );
             },
           );
