@@ -1,4 +1,4 @@
-import 'package:favorite_places/models/favorite_place.dart';
+import 'package:favorite_places/models/place.dart';
 import 'package:flutter/material.dart';
 
 class PlaceDetailsScreen extends StatelessWidget {
