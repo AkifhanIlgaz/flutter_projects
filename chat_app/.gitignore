@@ -42,3 +42,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+firebase_options.dart
+firebase_app_id_file.json
+GoogleService-Info.plist
+google-services.json
+
+GeneratedPluginRegistrant.swift
+generated_plugins.cmake
+generated_plugins.cc
