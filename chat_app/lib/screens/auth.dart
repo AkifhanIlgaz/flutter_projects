@@ -22,6 +22,7 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isAuthenticating = false;
   late String _enteredEmail;
   late String _enteredPassword;
+  late String _enteredUsername;
   File? _pickedImage;
 
   void _submit() async {
@@ -59,7 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .doc(userCredentials.user!.uid)
             .set(
           {
-            "username": "to be done...",
+            "username": _enteredUsername,
             "email": _enteredEmail,
             "image_url": imageUrl,
           },
@@ -139,6 +140,25 @@ class _AuthScreenState extends State<AuthScreen> {
                               _enteredEmail = email!;
                             },
                           ),
+                          if (!_isLogin)
+                            TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Username",
+                              ),
+                              keyboardType: TextInputType.text,
+                              enableSuggestions: false,
+                              validator: (value) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.length < 4) {
+                                  return "Please enter a valid username (at least 4 characters)";
+                                }
+                                return null;
+                              },
+                              onSaved: (username) {
+                                _enteredUsername = username!;
+                              },
+                            ),
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: "Password",
