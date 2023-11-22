@@ -8,8 +8,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("şsşlksdflkdsf");
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Flutter Chat"),
